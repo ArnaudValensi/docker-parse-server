@@ -7,7 +7,7 @@ ADD index.js ${PARSE_HOME}/index.js
 ADD package.json ${PARSE_HOME}/package.json
 ADD jsconfig.json ${PARSE_HOME}/jsconfig.json
 
-ADD parse-cloud/* $PARSE_CLOUD/
+COPY parse-cloud $PARSE_CLOUD
 
 WORKDIR $PARSE_HOME
 RUN npm install
