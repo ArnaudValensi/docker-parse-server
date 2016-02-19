@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-// ref. parse-server/index.js
-// ref. parse-server/bin/parse-server
 
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
@@ -24,15 +22,9 @@ if (facebookAppIds) {
     facebookAppIds = facebookAppIds.split(",");
 }
 
-/* TODO from config.json
-if (process.env.PARSE_SERVER_OPTIONS) {
-	options = JSON.parse(process.env.PARSE_SERVER_OPTIONS);
-}
-*/
-
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
-  cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/parse/cloud/main.js',
+  cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/parse-cloud/cloud/main.js',
 
   appId: process.env.APP_ID || 'myAppId',
   masterKey: process.env.MASTER_KEY, //Add your master key here. Keep it secret!
