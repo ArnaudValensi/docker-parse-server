@@ -16,7 +16,7 @@ RUN npm install
 #ENV APP_ID myAppId
 #ENV MASTER_KEY myMasterKey
 #ENV DATABASE_URI mongodb://localhost:27017/dev
-#ENV CLOUD_CODE_MAIN ${PARSE_CLOUD}/cloud/main.js
+#ENV CLOUD_HOME ${PARSE_CLOUD}/parse-cloud
 #ENV PARSE_MOUNT /parse
 #ENV COLLECTION_PREFIX
 #ENV CLIENT_KEY
