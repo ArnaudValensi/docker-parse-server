@@ -1,5 +1,20 @@
 FROM node:latest
 
+RUN apt-get update && apt-get install -y \
+  openssh-server
+
+RUN echo 'root:test' | chpasswd
+RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+# SSH login fix. Otherwise user is kicked off after login
+#RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+# not sure of that, it is from
+# https://docs.docker.com/engine/examples/running_ssh_service/
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
+
 ENV PARSE_HOME /parse
 ENV PARSE_CLOUD /parse/parse-cloud
 
@@ -36,4 +51,6 @@ EXPOSE $PUBLIC_PORT
 VOLUME $PARSE_CLOUD
 ENV NODE_PATH .
 
+#CMD ["/usr/sbin/sshd", "-D"]
 CMD [ "npm", "start" ]
+#CMD /etc/init.d/ssh start && npm start
