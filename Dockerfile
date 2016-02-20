@@ -12,17 +12,20 @@ RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/
 
 # not sure of that, it is from
 # https://docs.docker.com/engine/examples/running_ssh_service/
-ENV NOTVISIBLE "in users profile"
-RUN echo "export VISIBLE=now" >> /etc/profile
+#ENV NOTVISIBLE "in users profile"
+#RUN echo "export VISIBLE=now" >> /etc/profile
 
 ENV PARSE_HOME /parse
 ENV PARSE_CLOUD /parse/parse-cloud
 
+ADD start.sh ${PARSE_HOME}/start.sh
 ADD index.js ${PARSE_HOME}/index.js
 ADD package.json ${PARSE_HOME}/package.json
 ADD jsconfig.json ${PARSE_HOME}/jsconfig.json
 
 COPY parse-cloud $PARSE_CLOUD
+
+RUN chmod +x ${PARSE_HOME}/start.sh
 
 WORKDIR $PARSE_HOME
 RUN npm install
@@ -51,6 +54,4 @@ EXPOSE $PUBLIC_PORT
 VOLUME $PARSE_CLOUD
 ENV NODE_PATH .
 
-#CMD ["/usr/sbin/sshd", "-D"]
-CMD [ "npm", "start" ]
-#CMD /etc/init.d/ssh start && npm start
+CMD ["sh", "-c", "${PARSE_HOME}/start.sh"]
